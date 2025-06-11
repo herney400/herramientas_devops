@@ -31,7 +31,7 @@
                 "npm -v",
                 "mkdir -p /home/ubuntu/node-app",
                 "sudo chown -R ubuntu:ubuntu /home/ubuntu/node-app",
-                "echo 'const express = require(\"express\");\nconst app = express();\napp.get(\"/\", (req, res) => res.send(\"Hola desde Node.js en el puerto 3000\"));\napp.listen(3000, '0.0.0.0'() => console.log(\"App corriendo en puerto 3000\"));' > /home/ubuntu/node-app/app.js",
+                "echo 'const express = require(\"express\");\nconst app = express();\napp.get(\"/\", (req, res) => res.send(\"Hola desde Node.js en el puerto 3000\"));\napp.listen(3000, '0.0.0.0',() => console.log(\"App corriendo en puerto 3000\"));' > /home/ubuntu/node-app/app.js",
                 "cd /home/ubuntu/node-app && sudo -u ubuntu npm init -y",
                 "cd /home/ubuntu/node-app && sudo -u ubuntu npm install express",
                 "echo '[Unit]\nDescription=Node.js App\nAfter=network.target\n\n[Service]\nExecStart=/usr/bin/node /home/ubuntu/node-app/app.js\nRestart=always\nUser=ubuntu\nEnvironment=PORT=3000\n\n[Install]\nWantedBy=multi-user.target' | sudo tee /etc/systemd/system/node-app.service",
