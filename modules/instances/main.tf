@@ -15,13 +15,7 @@ resource "aws_instance" "mongodb_instance" {
     Name = "mongodb-instance"
   }
 
-  user_data = <<-EOF
-              #!/bin/bash
-              sudo apt update -y
-              sudo apt install mongodb -y
-              sudo systemctl start mongodb
-              sudo systemctl enable mongodb
-              EOF
+
 }
 
 resource "aws_instance" "nodejs_instance" {
@@ -35,25 +29,7 @@ resource "aws_instance" "nodejs_instance" {
     Name = "nodejs-instance"
   }
 
-  user_data = <<-EOF
-              #!/bin/bash
-              sudo apt update -y
-              sudo apt install -y nodejs npm
-              echo "Creando servidor Hola Mundo..."
 
-              cat <<'EOT' > /home/ubuntu/app.js
-              const http = require('http');
-              const server = http.createServer((req, res) => {
-                res.writeHead(200, {'Content-Type': 'text/plain'});
-                res.end('Hola Mundo\\n');
-              });
-              server.listen(80, '0.0.0.0', () => {
-                console.log('Servidor escuchando en puerto 80');
-              });
-              EOT
-
-              node /home/ubuntu/app.js &
-              EOF
 }
 #Generar clave ssh
 #ssh-keygen -t rsa -b 4096 -C "lider.tecnico.dos@correounivalle.edu.co"

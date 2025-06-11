@@ -51,6 +51,13 @@ resource "aws_security_group" "allow_ssh_http_mongo" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  ingress {
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # regla para acceder desde afuera porr el puerrto 3000
+
+  }
 
   tags = {
     Name = "allow_ssh_http_mongo"

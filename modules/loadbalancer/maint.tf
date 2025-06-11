@@ -13,14 +13,14 @@ resource "aws_lb" "mean-lb" {
 
 resource "aws_lb_target_group" "mean-tg" {
   name     = "mean-target-group"
-  port     = 80
+  port     = 3000
   protocol = "HTTP"
   vpc_id   = var.vpc_id
 
   health_check {
     path                = "/"
     protocol            = "HTTP"
-    port                = "traffic-port"
+    port                = "3000"
     healthy_threshold   = 5
     unhealthy_threshold = 2
     timeout             = 20
@@ -47,5 +47,5 @@ resource "aws_lb_target_group_attachment" "nodejs-instance" {
   count            = length(var.nodejs_instance_ids)
   target_group_arn = aws_lb_target_group.mean-tg.arn
   target_id        = var.nodejs_instance_ids[count.index]
-  port             = 80
+  port             = 3000
 }

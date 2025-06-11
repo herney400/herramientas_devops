@@ -1,0 +1,45 @@
+{
+    "variables": {
+        "region": "us-east-1",
+        "source_ami": "ami-00ca0754cabb20b45",
+        "instance_type": "t2.micro",
+        "client_id": "{{env `ARM_CLIENT_ID`}}",
+        "client_secret": "{{env `ARM_CLIENT_SECRET`}}",
+        "tenant_id": "{{env `ARM_TENANT_ID`}}",
+        "subscription_id": "{{env `ARM_SUBSCRIPTION_ID`}}",
+        "azure_location": "East US"
+    },
+    "builders": [
+        {
+            "type": "amazon-ebs",
+            "region": "{{user `region`}}",
+            "source_ami": "{{user `source_ami`}}",
+            "instance_type": "{{user `instance_type`}}",
+            "ssh_username": "ubuntu",
+            "ami_name": "mean-node-{{timestamp}}"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "inline": [
+                "sudo apt update -y",
+                "sudo apt install -y curl wget gnupg",
+                "curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -",
+                "sudo apt install -y nodejs",
+                "node -v",
+                "npm -v",
+                "mkdir -p /home/ubuntu/node-app",
+                "sudo chown -R ubuntu:ubuntu /home/ubuntu/node-app",
+                "echo 'const express = require(\"express\");\nconst app = express();\napp.get(\"/\", (req, res) => res.send(\"Hola desde Node.js en el puerto 3000\"));\napp.listen(3000, () => console.log(\"App corriendo en puerto 3000\"));' > /home/ubuntu/node-app/app.js",
+                "cd /home/ubuntu/node-app && sudo -u ubuntu npm init -y",
+                "cd /home/ubuntu/node-app && sudo -u ubuntu npm install express",
+                "echo '[Unit]\nDescription=Node.js App\nAfter=network.target\n\n[Service]\nExecStart=/usr/bin/node /home/ubuntu/node-app/app.js\nRestart=always\nUser=ubuntu\nEnvironment=PORT=3000\n\n[Install]\nWantedBy=multi-user.target' | sudo tee /etc/systemd/system/node-app.service",
+                "sudo systemctl daemon-reexec",
+                "sudo systemctl daemon-reload",
+                "sudo systemctl enable node-app",
+                "sudo systemctl start node-app"
+            ]
+        }
+    ]
+}
