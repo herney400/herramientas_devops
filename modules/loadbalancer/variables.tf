@@ -12,5 +12,6 @@ variable "vpc_id" {
 }
 
 variable "nodejs_instance_ids" {
-  type = list(string)
+  type        = list(string)
+  description = "IDs de las instancias Node.js para balancear"
 }

@@ -26,3 +26,7 @@ variable "public_key_path" {
   type    = string
   default = ""
 }
+#variable "nodejs_instance_ids" {
+#  type        = list(string)
+#  description = "IDs de las instancias Node.js para registrar en el Target Group"
+#}

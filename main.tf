@@ -14,6 +14,7 @@ module "instances" {
   nodejs_ami        = "ami-0c69af4db824d6ea6"
   public_subnet_ids = module.network.public_subnet_ids
   security_group_id = module.network.security_group_id
+
 }
 
 module "loadbalancer" {
@@ -21,5 +22,8 @@ module "loadbalancer" {
   public_subnet_ids   = module.network.public_subnet_ids
   security_group_id   = module.network.security_group_id
   vpc_id              = module.network.vpc_id
-  nodejs_instance_ids = [module.instances.nodejs_instance_id]
+  nodejs_instance_ids = module.instances.nodejs_instance_ids
 }
+
+
+ 

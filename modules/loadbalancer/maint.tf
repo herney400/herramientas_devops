@@ -43,7 +43,7 @@ resource "aws_lb_listener" "mean-listener" {
   }
 }
 
-resource "aws_lb_target_group_attachment" "nodejs-instance" {
+resource "aws_lb_target_group_attachment" "nodejs_instances" {
   count            = length(var.nodejs_instance_ids)
   target_group_arn = aws_lb_target_group.mean-tg.arn
   target_id        = var.nodejs_instance_ids[count.index]
